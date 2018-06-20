@@ -589,7 +589,7 @@ FAIO.optionHeroInvokerAutoInvoke =  Menu.AddOptionBool(OverallPath[85], "4. Auto
 FAIO.optionHeroInvokerPanelCD = Menu.AddOptionSlider(OverallPath[85], "3. Show skill cooldowns {{invoker}}", 0, 2, 1)
 FAIO.optionHeroInvokerPanelXPos = Menu.AddOptionSlider(OverallPath[85], "1. X-position {{invoker}}", -200, 500, 10)
 FAIO.optionHeroInvokerPanelYPos = Menu.AddOptionSlider(OverallPath[85], "2. Y-position {{invoker}}", -500, 500, 10)
-FAIO.invokerPanelSizeOption = Menu.AddOptionSlider(OverallPath[85], "0. Panel Size {{invoker}}", 20, 40, 2)
+FAIO.invokerPanelSizeOption = Menu.AddOptionSlider(OverallPath[85], "0. Panel Size {{invoker}}", 20, 40, 20)
 FAIO.optionHeroInvokerPanelShort =  Menu.AddOptionBool(OverallPath[86], "Enable {{invoker custom}}", false)
 FAIO.optionHeroInvokerPanelShortXPos = Menu.AddOptionSlider(OverallPath[86], "X-position short {{invoker custom}}", -700, 700, 20)
 FAIO.optionHeroInvokerPanelShortYPos = Menu.AddOptionSlider(OverallPath[86], "Y-position short {{invoker custom}}", -700, 700, 20)
@@ -602,7 +602,7 @@ FAIO.optionHeroInvokerTornadoKey = Menu.AddKeyOption(OverallPath[87], "Fast torn
 
 FAIO.optionHeroInvokerTornadoStyle = Menu.AddOptionCombo(OverallPath[87], "Fast tornado style {{invoker nado}}", {' enemy prediction', ' mouse cursor'}, 1)
 
-FAIO.optionInvokerGhostWalkKey = Menu.AddKeyOption(OverallPath[87], "Fast GhostWalk key", Enum.ButtonCode.KEY_NONE)
+--FAIO.optionInvokerGhostWalkKey = Menu.AddKeyOption(OverallPath[87], "Fast GhostWalk key", Enum.ButtonCode.KEY_NONE)
 FAIO.optionHeroInvokerCancelEnable =  Menu.AddOptionBool(OverallPath[88], "0. Enable {{invoker chanel}}", false)
 FAIO.optionHeroInvokerCancelTPFog =  Menu.AddOptionBool(OverallPath[88], "2. Auto cancel TP in Fog", false)
 FAIO.optionHeroInvokerCancelBara =  Menu.AddOptionBool(OverallPath[88], "3. Auto cancel bara charge", false)
@@ -19694,9 +19694,9 @@ function FAIO.InvokerCombo(myHero, enemy)
 	end
 	
 
-	if Menu.IsKeyDownOnce(FAIO.optionInvokerGhostWalkKey) then
-		FAIO.invokerCaptureGhostwalkActivation = os.clock()
-	end
+	--if Menu.IsKeyDownOnce(FAIO.optionInvokerGhostWalkKey) then
+	--	FAIO.invokerCaptureGhostwalkActivation = os.clock()
+	--end
 	
 	if next(FAIO.PreInvokeSkills) ~= nil then
 		FAIO.InvokerPreInvoke(myHero, myMana, invoke)
