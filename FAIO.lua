@@ -1,7 +1,8 @@
-﻿
+﻿-- foosAIO.lua
 -- Version: beta.0.98.10d
 -- Author: foo0oo
-
+-- Release Date: 2017/05/03
+-- Last Update: 2018/01/29
 local FAIO = {}
 -- Menu Items
 	-- general Menu
@@ -358,7 +359,7 @@ FAIO.optionHeroPudgeBlink = Menu.AddOptionBool(OverallPath[43], "2. Use blink fo
 FAIO.optionHeroPudgeBlinkMinRange = Menu.AddOptionSlider(OverallPath[43], "2.1 Blink min. range {{pudge}}",  250, 1000, 50)
 FAIO.optionHeroPudgeStaff = Menu.AddOptionBool(OverallPath[43], "3. Use force staff for initiation {{pudge}}", false)
 FAIO.optionHeroPudgeHookCombo = Menu.AddOptionBool(OverallPath[43], "4. Use hook in combo {{pudge}}", false)
-FAIO.optionHeroPudgeHookComboMaxRange = Menu.AddOptionSlider(OverallPath[43], "4.1 Max hook range in combo {{pudge}}",  250, 1000, 50)
+FAIO.optionHeroPudgeHookComboMaxRange = Menu.AddOptionSlider(OverallPath[43], "4.1 Max hook range in combo {{pudge}}",  250, 1550, 1000)
 FAIO.optionHeroPudgeHook = Menu.AddOptionBool(OverallPath[45], "1. Enable hook helper {{pudge hook}}", false)
 FAIO.optionHeroPudgeHookKey = Menu.AddKeyOption(OverallPath[45], "1.1 Hook helper key {{pudge hook}}", Enum.ButtonCode.KEY_NONE)
 FAIO.optionHeroPudgeHookAcquiRange = Menu.AddOptionSlider(OverallPath[45], "1.2 Target acquisition range {{pudge hook}}",  250, 1000, 50)
