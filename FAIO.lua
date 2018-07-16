@@ -224,7 +224,7 @@ FAIO.optionEnable = Menu.AddOptionBool(OverallPath[1], "Overall enabled {{overal
 -- /\ Current Hero /\ --
 FAIO.optionComboKey = Menu.AddKeyOption(OverallPath[1], "overall combo key", Enum.ButtonCode.KEY_SPACE)
 FAIO.optionTargetStyle = Menu.AddOptionCombo(OverallPath[2], "0. Targeting style {{overall targeting}}", {'locked target', 'free target'}, 1)
-FAIO.optionTargetRange = Menu.AddOptionSlider(OverallPath[2], "1. Target acquisition range {{overall targeting}}",  200, 1000, 50)
+FAIO.optionTargetRange = Menu.AddOptionSlider(OverallPath[2], "1. Target acquisition range",  200, 1000, 400)
 FAIO.optionMoveToCursor = Menu.AddOptionBool(OverallPath[2], "2. Move to Cursor Pos {{overall targeting}}", false)
 FAIO.optionLockTargetIndicator = Menu.AddOptionBool(OverallPath[2], "3.1 Draw target indicator {{overall targeting}}", false)
 FAIO.optionLockTargetParticle = Menu.AddOptionCombo(OverallPath[2], "3.2 Indicator style {{overall targeting}}", {'blinding light', 'blood bath', 'tower aggro'}, 1)
