@@ -7,8 +7,42 @@
 local FAIO = {}
 -- Menu Items
 	-- general Menu
+local log = function(msg) 
+	Log.Write(tostring(msg))
+end
+
+function GetIconPath( name, ... )
+	return 'panorama/images/heroes/icons/npc_dota_hero_' .. name .. '_png.vtex_c'
+end
+
+local JSON = require "scripts.AIO.System.JSON"
+
+local Vars = nil
+
+function ResetVars( ... )
+	Vars = nil
+	Vars = require "scripts.AIO.System.Variables"
+end
+ResetVars()
+
+function LoadJSONConfigs( ... )
+	log('Loading configs...')
+	for k,v in pairs(Vars.JSONName) do
+		local FList = io.open ('scripts/AIO/Configs/' .. v[2] , 'r+')
+		local FItems = FList:read('*a')
+		log(' -Config ' .. v[1] .. ' loaded')
+		FList:close()
+		Vars.JSONList[v[1]] = JSON:decode(FItems)
+	end
+	log('Configs loaded.')
+	log('')
+end
+
+LoadJSONConfigs()
+
 local OverallPath = {}
 OverallPath[1] = { ".FAIO" }
+
 OverallPath[2] = { ".FAIO", "Target selector" }
 OverallPath[3] = { ".FAIO", "Target selector", "Target exclusions" }
 OverallPath[4] = { ".FAIO", "Ward awareness" }
@@ -35,63 +69,103 @@ OverallPath[24] = { ".FAIO", "Item Usage", "Utility Items" }
 OverallPath[25] = { ".FAIO", "Item Usage", "Defensive Items" }
 OverallPath[26] = { ".FAIO", "Item Usage", "Defensive Items", "BKB" }
 OverallPath[27] = { ".FAIO", "Hero Scripts", "Strength heroes", "Axe" }
+Menu.AddOptionIcon(OverallPath[27], GetIconPath('axe'))
 OverallPath[28] = { ".FAIO", "Hero Scripts", "Strength heroes", "Centaur" }
+Menu.AddOptionIcon(OverallPath[28], GetIconPath('centaur'))
 OverallPath[29] = { ".FAIO", "Hero Scripts", "Strength heroes", "Magnataur" }
+Menu.AddOptionIcon(OverallPath[29], GetIconPath('magnataur'))
 OverallPath[30] = { ".FAIO", "Hero Scripts", "Strength heroes", "Magnataur", "Auto reverse polarity" }
 OverallPath[31] = { ".FAIO", "Hero Scripts", "Strength heroes", "Magnataur", "Skewer combo" }
 OverallPath[32] = { ".FAIO", "Hero Scripts", "Strength heroes", "Clockwerk" }
+Menu.AddOptionIcon(OverallPath[32], GetIconPath('rattletrap'))
 OverallPath[33] = { ".FAIO", "Hero Scripts", "Strength heroes", "Huskar" }
-OverallPath[34] = { ".FAIO", "Hero Scripts", "Strength heroes", }
+Menu.AddOptionIcon(OverallPath[33], GetIconPath('huskar'))
+OverallPath[34] = { ".FAIO", "Hero Scripts", "Strength heroes", "Tiny" }
+Menu.AddOptionIcon(OverallPath[34], GetIconPath('tiny'))
 OverallPath[35] = { ".FAIO", "Hero Scripts", "Strength heroes", "Timbersaw" }
+Menu.AddOptionIcon(OverallPath[35], GetIconPath('shredder'))
 OverallPath[36] = { ".FAIO", "Hero Scripts", "Strength heroes", "Ursa" }
+Menu.AddOptionIcon(OverallPath[36], GetIconPath('ursa'))
 OverallPath[37] = { ".FAIO", "Hero Scripts", "Strength heroes", "Legion Commander" }
+Menu.AddOptionIcon(OverallPath[37], GetIconPath('legion_commander'))
 OverallPath[38] = { ".FAIO", "Hero Scripts", "Strength heroes", "Slardar" }
+Menu.AddOptionIcon(OverallPath[38], GetIconPath('slardar'))
 OverallPath[39] = { ".FAIO", "Hero Scripts", "Strength heroes", "Nightstalker" }
+Menu.AddOptionIcon(OverallPath[39], GetIconPath('night_stalker'))
 OverallPath[40] = { ".FAIO", "Hero Scripts", "Strength heroes", "Chaos Knight" }
+Menu.AddOptionIcon(OverallPath[40], GetIconPath('chaos_knight'))
 OverallPath[41] = { ".FAIO", "Hero Scripts", "Strength heroes", "Kunkka Ghostship Helper" }
+Menu.AddOptionIcon(OverallPath[41], GetIconPath('kunkka'))
 OverallPath[42] = { ".FAIO", "Hero Scripts", "Strength heroes", "Undying" }
+Menu.AddOptionIcon(OverallPath[42], GetIconPath('undying'))
 OverallPath[43] = { ".FAIO", "Hero Scripts", "Strength heroes", "Pudge" }
+Menu.AddOptionIcon(OverallPath[43], GetIconPath('pudge'))
 OverallPath[44] = { ".FAIO", "Hero Scripts", "Strength heroes", "Earthshaker" }
+Menu.AddOptionIcon(OverallPath[44], GetIconPath('earthshaker'))
 OverallPath[45] = { ".FAIO", "Hero Scripts", "Strength heroes", "Pudge", "Hook helper" }
 OverallPath[46] = { ".FAIO", "Hero Scripts", "Strength heroes", "Pudge", "Misc" }
 OverallPath[47] = { ".FAIO", "Hero Scripts", "Agility heroes", "Ember Spirit" }
+Menu.AddOptionIcon(OverallPath[47], GetIconPath('ember_spirit'))
 OverallPath[48] = { ".FAIO", "Hero Scripts", "Agility heroes", "Templar Assassin" }
+Menu.AddOptionIcon(OverallPath[48], GetIconPath('templar_assassin'))
 OverallPath[49] = { ".FAIO", "Hero Scripts", "Agility heroes", "Clinkz" }
+Menu.AddOptionIcon(OverallPath[49], GetIconPath('clinkz'))
 OverallPath[50] = { ".FAIO", "Hero Scripts", "Agility heroes", "Arc Warden" }
+Menu.AddOptionIcon(OverallPath[50], GetIconPath('arc_warden'))
 OverallPath[51] = { ".FAIO", "Hero Scripts", "Agility heroes", "Arc Warden", "Drawings" }
 OverallPath[52] = { ".FAIO", "Hero Scripts", "Agility heroes", "Arc Warden", "Main hero blink usage" }
 OverallPath[53] = { ".FAIO", "Hero Scripts", "Agility heroes", "Morphling" }
+Menu.AddOptionIcon(OverallPath[53], GetIconPath('morphling'))
 OverallPath[54] = { ".FAIO", "Hero Scripts", "Agility heroes", "Morphling", "Balance Board" }
 OverallPath[55] = { ".FAIO", "Hero Scripts", "Agility heroes", "Anti-Mage" }
+Menu.AddOptionIcon(OverallPath[55], GetIconPath('antimage'))
 OverallPath[56] = { ".FAIO", "Hero Scripts", "Agility heroes", "Phantom Assassin" }
+Menu.AddOptionIcon(OverallPath[56], GetIconPath('phantom_assassin'))
 OverallPath[57] = { ".FAIO", "Hero Scripts", "Agility heroes", "Phantom Assassin", "Auto dagger" }
 OverallPath[58] = { ".FAIO", "Hero Scripts", "Agility heroes", "Nyx Assassin" }
+Menu.AddOptionIcon(OverallPath[58], GetIconPath('nyx_assassin'))
 OverallPath[59] = { ".FAIO", "Hero Scripts", "Agility heroes", "Shadow Fiend" }
+Menu.AddOptionIcon(OverallPath[59], GetIconPath('nevermore'))
 OverallPath[60] = { ".FAIO", "Hero Scripts", "Agility heroes", "Viper" }
+Menu.AddOptionIcon(OverallPath[60], GetIconPath('viper'))
 OverallPath[61] = { ".FAIO", "Hero Scripts", "Agility heroes", "Vengeful Spirit" }
+Menu.AddOptionIcon(OverallPath[61], GetIconPath('vengefulspirit'))
 OverallPath[62] = { ".FAIO", "Hero Scripts", "Agility heroes", "Drow Ranger" }
+Menu.AddOptionIcon(OverallPath[62], GetIconPath('drow_ranger'))
 OverallPath[63] = { ".FAIO", "Hero Scripts", "Agility heroes", "Troll warlord" }
+Menu.AddOptionIcon(OverallPath[63], GetIconPath('troll_warlord'))
 OverallPath[64] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Skywrath Mage" }
+Menu.AddOptionIcon(OverallPath[64], GetIconPath('skywrath_mage'))
 OverallPath[65] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Necrophos" }
+Menu.AddOptionIcon(OverallPath[65], GetIconPath('necrolyte'))
 OverallPath[66] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Necrophos", "auto pulse" }
 OverallPath[67] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Necrophos", "auto pulse", "pulse farm" }
 OverallPath[68] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Necrophos", "auto pulse", "pulse harass" }
 OverallPath[69] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Necrophos", "panic mode" }
 OverallPath[70] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Outworld Devourer" }
+Menu.AddOptionIcon(OverallPath[70], GetIconPath('obsidian_destroyer'))
 OverallPath[71] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Outworld Devourer", "Kill steal" }
 OverallPath[72] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Outworld Devourer", "Auto save with prison" }
 OverallPath[73] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Silencer" }
+Menu.AddOptionIcon(OverallPath[73], GetIconPath('silencer'))
 OverallPath[74] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Dazzle" }
+Menu.AddOptionIcon(OverallPath[74], GetIconPath('dazzle'))
 OverallPath[75] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Dazzle", "Auto grave" }
 OverallPath[76] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Dazzle", "Auto weave" }
 OverallPath[77] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Dazzle", "Auto heal" }
 OverallPath[78] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Windrunner" }
+Menu.AddOptionIcon(OverallPath[78], GetIconPath('windrunner'))
 OverallPath[79] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Queen of Pain" }
+Menu.AddOptionIcon(OverallPath[79], GetIconPath('queenofpain'))
 OverallPath[80] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Visage" }
+Menu.AddOptionIcon(OverallPath[80], GetIconPath('visage'))
 OverallPath[81] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Puck" }
+Menu.AddOptionIcon(OverallPath[81], GetIconPath('puck'))
 OverallPath[82] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Natures Prophet" }
+Menu.AddOptionIcon(OverallPath[82], GetIconPath('furion'))
 OverallPath[83] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Natures Prophet", "Drawings" }
 OverallPath[84] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Invoker", "General" }
+Menu.AddOptionIcon({ ".FAIO", "Hero Scripts", "Intelligence heroes", "Invoker"}, GetIconPath('invoker'))
 OverallPath[85] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Invoker", "Panel" }
 OverallPath[86] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Invoker", "Panel", "Custom indicator" }
 OverallPath[87] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Invoker", "Fast Skills" }
@@ -103,21 +177,33 @@ OverallPath[92] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Invoker", "
 OverallPath[93] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Invoker", "Dynamic Combo", }
 OverallPath[94] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Invoker", "Invoker Spell Panel" }
 OverallPath[95] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Zuus" }
+Menu.AddOptionIcon(OverallPath[95], GetIconPath('zuus'))
 OverallPath[96] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Dark Willow" }
+Menu.AddOptionIcon(OverallPath[96], GetIconPath('dark_willow'))
 OverallPath[97] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Ogre Magi" }
+Menu.AddOptionIcon(OverallPath[97], GetIconPath('ogre_magi'))
 OverallPath[98] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Ancient Apparition" }
+Menu.AddOptionIcon(OverallPath[98], GetIconPath('ancient_apparition'))
 OverallPath[99] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Witch Doctor" }
+Menu.AddOptionIcon(OverallPath[99], GetIconPath('witch_doctor'))
 OverallPath[100] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Shadow Shaman" }
+Menu.AddOptionIcon(OverallPath[100], GetIconPath('shadow_shaman'))
 OverallPath[101] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Death prophet" }
+Menu.AddOptionIcon(OverallPath[101], GetIconPath('death_prophet'))
 OverallPath[102] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Crystal maiden" }
+Menu.AddOptionIcon(OverallPath[102], GetIconPath('crystal_maiden'))
 OverallPath[103] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Lion" }
+Menu.AddOptionIcon(OverallPath[103], GetIconPath('lion'))
 OverallPath[104] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Pugna" }
+Menu.AddOptionIcon(OverallPath[104], GetIconPath('pugna'))
 OverallPath[105] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Tinker" }
+Menu.AddOptionIcon(OverallPath[105], GetIconPath('tinker'))
 OverallPath[106] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Tinker", "Push mode" }
 OverallPath[107] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Tinker", "Rocket spam" }
 OverallPath[108] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Tinker", "Tinker panel" }
 OverallPath[109] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Tinker", "Misc options" }
 OverallPath[110] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Disruptor" }
+Menu.AddOptionIcon(OverallPath[110], GetIconPath('disruptor'))
 OverallPath[111] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Disruptor", "Glimpse Combo" }
 OverallPath[112] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Disruptor", "Ult Combo" }
 OverallPath[113] = { ".FAIO", "Hero Scripts", "Intelligence heroes", "Disruptor", "Drawings" }
@@ -130,17 +216,18 @@ OverallPath[119] = { ".FAIO", "dodgeIT", "Dangerous enemy skills", "Table 3" }
 OverallPath[120] = { ".FAIO", "dodgeIT", "Select myHero skills" }
 OverallPath[121] = { ".FAIO", "Current Hero" }
 OverallPath[122] = { ".FAIO", "Current Hero", "Axe" }
-
+OverallPath[123] = { ".FAIO", "Hero Scripts", "Strength heroes", "Sven" }
+Menu.AddOptionIcon(OverallPath[123], GetIconPath('Sven'))
 FAIO.optionEnable = Menu.AddOptionBool(OverallPath[1], "Overall enabled {{overall}}", false)
 -- Current Hero --
 --FAIO.CurentHero = Menu.AddOptionBool(OverallPath[121],"CurentHero: UNKNOWN",false)
 -- /\ Current Hero /\ --
 FAIO.optionComboKey = Menu.AddKeyOption(OverallPath[1], "overall combo key", Enum.ButtonCode.KEY_SPACE)
-FAIO.optionTargetStyle = Menu.AddOptionCombo(OverallPath[2], "0. Targeting style {{overall targeting}}", {'  locked target', '  free target'}, 1)
+FAIO.optionTargetStyle = Menu.AddOptionCombo(OverallPath[2], "0. Targeting style {{overall targeting}}", {'locked target', 'free target'}, 1)
 FAIO.optionTargetRange = Menu.AddOptionSlider(OverallPath[2], "1. Target acquisition range {{overall targeting}}",  200, 1000, 50)
 FAIO.optionMoveToCursor = Menu.AddOptionBool(OverallPath[2], "2. Move to Cursor Pos {{overall targeting}}", false)
 FAIO.optionLockTargetIndicator = Menu.AddOptionBool(OverallPath[2], "3.1 Draw target indicator {{overall targeting}}", false)
-FAIO.optionLockTargetParticle = Menu.AddOptionCombo(OverallPath[2], "3.2 Indicator style {{overall targeting}}", {'  blinding light', '  blood bath', '  tower aggro'}, 1)
+FAIO.optionLockTargetParticle = Menu.AddOptionCombo(OverallPath[2], "3.2 Indicator style {{overall targeting}}", {'blinding light', 'blood bath', 'tower aggro'}, 1)
 FAIO.optionTargetCheckAM = Menu.AddOptionBool(OverallPath[3], "Exclude AM with agha {{targetselect}}", false)
 FAIO.optionTargetCheckLotus = Menu.AddOptionBool(OverallPath[3], "Exclude active lotus orb {{targetselect}}", false)
 FAIO.optionTargetCheckBlademail = Menu.AddOptionBool(OverallPath[3], "Exclude blademail {{targetselect}}", false)
@@ -152,27 +239,27 @@ FAIO.optionWardAwareness = Menu.AddOptionBool(OverallPath[4], "1. Draw indicator
 FAIO.optionWardAwarenessRemove = Menu.AddOptionBool(OverallPath[4], "2. Auto remove indicator {{overall}}", false)
 FAIO.optionWardAwarenessClickRemove = Menu.AddOptionBool(OverallPath[4], "3. Click remove indicator {{overall}}", false)
 --FAIO.optionCreepControl = Menu.AddOptionBool(OverallPath[5], "1. Enable creep control {{creep control}}", false)
---FAIO.optionCreepControlMode = Menu.AddOptionCombo(OverallPath[5], "2. Creep control style {{creep control}}", {'  legit mode', '  fast mode'}, 1)
+--FAIO.optionCreepControlMode = Menu.AddOptionCombo(OverallPath[5], "2. Creep control style {{creep control}}", {'legit mode', 'fast mode'}, 1)
 --FAIO.optionCreepControlDelay = Menu.AddOptionSlider(OverallPath[5], "3. Legit mode delay {{creep control}}", 25, 250, 25)
 
 
 FAIO.optionOrbwalkEnable = Menu.AddOptionBool(OverallPath[6], "0. Enabled {{orbwalker}}", false)
 FAIO.optionOrbwalkOffset = Menu.AddOptionSlider(OverallPath[6], "1. Orbwalker offset",  0, 50, 5)
-FAIO.optionOrbwalkStyle = Menu.AddOptionCombo(OverallPath[6], "2. Orbwalker style {{orbwalker}}", {'  orbwalk to enemy', '  orbwalk to mouse'}, 1)
+FAIO.optionOrbwalkStyle = Menu.AddOptionCombo(OverallPath[6], "2. Orbwalker style {{orbwalker}}", {'orbwalk to enemy', 'orbwalk to mouse'}, 1)
 FAIO.optionOrbwalkDistance = Menu.AddOptionSlider(OverallPath[7], "1. Minimum distance {{orbwalker enemy}}", 30, 80, 10)
 FAIO.optionOrbwalkKiting = Menu.AddOptionBool(OverallPath[7], "2. kiting {{orbwalker}}", false)
 FAIO.optionOrbwalkDistanceMouse = Menu.AddOptionSlider(OverallPath[8], "2. Min. distance for ranged heroes {{orbwalker mouse}}", 20, 80, 10)
-FAIO.optionOrbwalkMouseStyle = Menu.AddOptionCombo(OverallPath[8], "1. Mouse orbwalk {{orbwalker mouse}}", {'  only with ranged heroes', '  with any hero'}, 1)
+FAIO.optionOrbwalkMouseStyle = Menu.AddOptionCombo(OverallPath[8], "1. Mouse orbwalk {{orbwalker mouse}}", {'only with ranged heroes', 'with any hero'}, 1)
 FAIO.optionOrbwalkMouseHold = Menu.AddOptionSlider(OverallPath[8], "3. Hold distance {{orbwalker mouse}}", 50, 250, 25)
 FAIO.optionDodgeItEnable = Menu.AddOptionBool(OverallPath[9], "0. Enable {{dodgeit}}", false)
 FAIO.optionLastHitEnable = Menu.AddOptionBool(OverallPath[10], "0. Enable {{lasthit}}", false)
 FAIO.optionLastHitKey = Menu.AddKeyOption(OverallPath[10], "1. Activation key {{lasthit}}", Enum.ButtonCode.KEY_NONE)
-FAIO.optionLastHitStyle = Menu.AddOptionCombo(OverallPath[10], "2. Targeting style {{lasthit}}", {'  last hit + deny', '  only last hit', '  only deny'}, 1)
-FAIO.optionLastHitOffset = Menu.AddOptionCombo(OverallPath[10], "3.1 Offset {{lasthit}}", {'  0.00s', '  0.05s', '  0.10s', '  0.15s', '  0.20s', '  0.25s'}, 1)
+FAIO.optionLastHitStyle = Menu.AddOptionCombo(OverallPath[10], "2. Targeting style {{lasthit}}", {'last hit + deny', 'only last hit', 'only deny'}, 1)
+FAIO.optionLastHitOffset = Menu.AddOptionCombo(OverallPath[10], "3.1 Offset {{lasthit}}", {'0.00s', '0.05s', '0.10s', '0.15s', '0.20s', '0.25s'}, 1)
 FAIO.optionLastHitPredict = Menu.AddOptionBool(OverallPath[10], "3.2 Use avg damage for prediction {{lasthit}}", false)
 FAIO.optionLastHitDrawCreepEnable = Menu.AddOptionBool(OverallPath[11], "1. Enable creep drawings {{lasthit}}", false)
 FAIO.optionLastHitDrawRange = Menu.AddOptionBool(OverallPath[11], "0. Draw attack range {{lasthit}}", false)
-FAIO.optionLastHitDrawStyle = Menu.AddOptionCombo(OverallPath[11], "1. creep info style {{lasthit}}",{'  enemy+ally creeps', '  enemy creeps only'}, 1)
+FAIO.optionLastHitDrawStyle = Menu.AddOptionCombo(OverallPath[11], "1. creep info style {{lasthit}}",{'enemy+ally creeps', 'enemy creeps only'}, 1)
 FAIO.optionLastHitDrawCreepTimer = Menu.AddOptionBool(OverallPath[11], "2. Draw last hit indicator {{lasthit}}", false)
 FAIO.optionLastHitAutoModeMove = Menu.AddOptionBool(OverallPath[12], "1. Move to cursor {{lasthit}}", false)
 FAIO.optionLastHitAutoModeMoveRange = Menu.AddOptionSlider(OverallPath[12], "2. Min. move range {{lasthit}}",  10, 400, 10)
@@ -186,7 +273,7 @@ FAIO.optionLastHitOrbMana = Menu.AddOptionSlider(OverallPath[13], "2. Mana tresh
 FAIO.optionKillStealEnable = Menu.AddOptionBool(OverallPath[14], "0. Killsteal with nuke skills {{killsteal}}", false)
 --FAIO.optionKillStealEnableItems = Menu.AddOptionBool(OverallPath[14], "1. Killsteal with nuke items {{killsteal}}", false)
 FAIO.optionKillStealInvoker = Menu.AddOptionBool(OverallPath[15], "1. Auto Sunstrike KillSteal", false)
-FAIO.optionKillStealInvokerTurn = Menu.AddOptionBool(OverallPath[15], "5.2 Turn check adjustment", "amount of game ticks enemy must run in a straight line (30 ticks ~ 1 sec)", 10, 60, 5)
+FAIO.optionKillStealInvokerTurn = Menu.AddOptionSlider(OverallPath[15], "5.2 Turn check adjustment", 10, 60, 20)
 FAIO.optionKillStealAutoInvoke = Menu.AddOptionBool(OverallPath[15], "5.1 Auto Invoke Sunstrike", false)
 FAIO.optionKillStealInvokerTPpartice = Menu.AddOptionBool(OverallPath[15], "3. Killsteal on TPing enemies", false)
 FAIO.optionKillStealInvokerImmobil = Menu.AddOptionBool(OverallPath[15], "2. Killsteal on immobilized enemies", false)
@@ -199,7 +286,7 @@ FAIO.optionHeroInvokerCataKSCount = Menu.AddOptionSlider(OverallPath[15], "6.1 C
 
 -- Items Menu
 FAIO.optionItemEnable = Menu.AddOptionBool(OverallPath[16], "0. Enabled {{off items}}", false)
-FAIO.optionItemStyle = Menu.AddOptionCombo(OverallPath[17], "Choose activation style", {'  max speed, no order','  ordered','  smart ordered'}, 1)
+FAIO.optionItemStyle = Menu.AddOptionCombo(OverallPath[17], "Choose activation style", {'max speed, no order','ordered','smart ordered'}, 1)
 FAIO.optionItemStack = Menu.AddOptionBool(OverallPath[17], "Stack hex and silence", false)
 FAIO.optionItemSoulring = Menu.AddOptionBool(OverallPath[18], "Soulring", false)
 FAIO.optionItemVeil = Menu.AddOptionSlider(OverallPath[18], "Use Item Veil Of Discord",  0, 18, 1)
@@ -224,7 +311,7 @@ FAIO.optionItemArmlet = Menu.AddOptionBool(OverallPath[19], "0. Enable {{armlet}
 FAIO.optionItemArmletHPTreshold = Menu.AddOptionSlider(OverallPath[19], "1. HP threshold {{armlet}}", 100, 500, 50)
 FAIO.optionItemArmletCombo = Menu.AddOptionBool(OverallPath[19], "2. Combo usage {{armlet}}", false)
 FAIO.optionItemArmletRightClick = Menu.AddOptionBool(OverallPath[19], "3. Right click activation {{armlet}}", false)
-FAIO.optionItemArmletRightClickStyle = Menu.AddOptionCombo(OverallPath[19], "3.1 Right click style {{armlet}}", {'  single click', '  double click'}, 1)
+FAIO.optionItemArmletRightClickStyle = Menu.AddOptionCombo(OverallPath[19], "3.1 Right click style {{armlet}}", {'single click', 'double click'}, 1)
 FAIO.optionItemArmletIllusion = Menu.AddOptionBool(OverallPath[19], "4. Illusion activation {{armlet}}", false)
 FAIO.optionItemArmletManuallyOverride = Menu.AddOptionBool(OverallPath[19], "5. Manual override {{armlet}}", false)
 FAIO.optionItemHurricane = Menu.AddOptionBool(OverallPath[20], "0. Enable {{hurricane}}", false)
@@ -336,7 +423,7 @@ FAIO.optionHeroLegionBlinkRange = Menu.AddOptionSlider(OverallPath[37], "1.1 Min
 FAIO.optionHeroLegionBKB = Menu.AddOptionBool(OverallPath[37], "2. Use bkb in combo {{legion}}", false)
 FAIO.optionHeroSlardar = Menu.AddOptionBool(OverallPath[38], "Slardar Combo", false)
 FAIO.optionHeroSlardarStyle = Menu.AddOptionCombo(OverallPath[38], "Slardar Jump Style", {' blink target', ' blink best position'}, 1)
-FAIO.optionHeroSven = Menu.AddOptionBool(OverallPath[34], "Sven", false)
+FAIO.optionHeroSven = Menu.AddOptionBool(OverallPath[123], "Sven", false)
 FAIO.optionHeroNS = Menu.AddOptionBool(OverallPath[39], "1. NS Combo", false)
 FAIO.optionHeroNSBlink = Menu.AddOptionBool(OverallPath[39], "2. Use blink in combo {{NS}}", false)
 FAIO.optionHeroCK = Menu.AddOptionBool(OverallPath[40], "1. CK Combo", false)
@@ -2839,6 +2926,7 @@ function FAIO.OnParticleUpdateEntity(particle)
 	if not particle then return end
 
 	if not Heroes.GetLocal() then return end	
+
 	if not particle.position then return end
 	if particle.controlPoint > 0 then return end
 
@@ -4307,7 +4395,7 @@ function FAIO.lastHitterDrawing(myHero)
 	if Menu.IsEnabled(FAIO.optionLastHitDrawCreepTimer) then
 		local imageHandle = FAIO.lastHitterKillableImage
 			if imageHandle == nil then
-				imageHandle = Renderer.LoadImage("resource/flash3/images/heroes/selection/fav_heart.png")
+				imageHandle = Renderer.LoadImage("panorama/images/icon_star_png.vtex_c")
 				FAIO.lastHitterKillableImage = imageHandle
 			end
 		for i, v in pairs(FAIO.lastHitCreepHPPredictionTime) do
@@ -4322,10 +4410,10 @@ function FAIO.lastHitterDrawing(myHero)
 					if visible then
 						if dieTime - GameRules.GetGameTime() > FAIO.lastHitterTimingOffsetter(myHero, target) then
 							Renderer.SetDrawColor(255,215,0,200)
-							Renderer.DrawImage(imageHandle, x-20, y-49, 40, 40)
+							Renderer.DrawImage(imageHandle, x-20, y-49, 25, 25)
 						else
 							Renderer.SetDrawColor(50,205,50,200)
-							Renderer.DrawImage(imageHandle, x-20, y-49, 40, 40)
+							Renderer.DrawImage(imageHandle, x-20, y-49, 25, 25)
 						end
 					end
 				else
@@ -4333,10 +4421,10 @@ function FAIO.lastHitterDrawing(myHero)
 						if visible then
 							if dieTime - GameRules.GetGameTime() > FAIO.lastHitterTimingOffsetter(myHero, target) then
 								Renderer.SetDrawColor(255,215,0,200)
-								Renderer.DrawImage(imageHandle, x-20, y-49, 40, 40)
+								Renderer.DrawImage(imageHandle, x-20, y-49, 25, 25)
 							else
 								Renderer.SetDrawColor(50,205,50,200)
-								Renderer.DrawImage(imageHandle, x-20, y-49, 40, 40)
+								Renderer.DrawImage(imageHandle, x-20, y-49, 25, 25)
 							end
 						end
 					end
@@ -4828,8 +4916,10 @@ function FAIO.isEnemyTurning(enemy)
 
 	if enemy == nil then return true end
 	if not NPC.IsRunning(enemy) then return true end
+	--local rotationSpeed = Entity.GetAngVelocity(enemy):Length2D()
+	
+	local rotationSpeed = Vars.JSONList.heroes.DOTAHeroes[NPC.GetUnitName(enemy)].MovementTurnRate * ( 1 / (NPC.GetBaseSpeed(enemy) - FAIO.GetMoveSpeed(enemy)) )
 
-	local rotationSpeed = Entity.GetAngVelocity(enemy):Length2D()
 	if NPC.IsRunning(enemy) then
 		table.insert(FAIO.rotationTable, rotationSpeed)
 			if #FAIO.rotationTable > (Menu.GetValue(FAIO.optionKillStealInvokerTurn) + 1) then
@@ -4853,7 +4943,7 @@ function FAIO.isEnemyTurning(enemy)
 			return true
 		end
 	end
- 
+
 end
 
 function FAIO.GetMoveSpeed(enemy)
@@ -15848,6 +15938,7 @@ function FAIO.WindRunnerCombo(myHero, enemy)
 								return
 							end
 							if blink and Ability.IsReady(blink) and not Ability.IsReady(shackleShot) then
+							
 								Ability.CastPosition(blink, Entity.GetAbsOrigin(enemy) + (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Rotated(45):Normalized():Scaled(200))
 								Ability.CastPosition(branch, Entity.GetAbsOrigin(enemy) + (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Normalized():Scaled(150))
 								return
@@ -25009,6 +25100,7 @@ function FAIO.AutoSunstrikeKillStealNew(myHero)
 	if not Ability.IsReady(sunStrike) then return end
 	if not Ability.IsCastable(sunStrike, myMana) then return end
 
+
 	if Menu.IsEnabled(FAIO.optionKillStealInvokerTPpartice) then
 		if FAIO.invokerSunstrikeKSParticleProcess(myHero) == true then
 			if not FAIO.InvokerIsAbilityInvoked(myHero, sunStrike) then
@@ -25159,6 +25251,7 @@ function FAIO.AutoSunstrikeKillStealNew(myHero)
 					if not NPC.IsRunning(bestTarget) then
 						return
 					else
+				
 						if FAIO.isEnemyTurning(bestTarget) == false then
 							if Ability.IsReady(sunStrike) and Ability.IsCastable(sunStrike, myMana) then
 								if not FAIO.InvokerIsAbilityInvoked(myHero, sunStrike) then
