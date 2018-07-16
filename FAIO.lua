@@ -8541,8 +8541,11 @@ function FAIO.drawWard(myHero)
 			local pos = v.pos
 			local dieTime = v.dieTime
 			if dieTime > GameRules.GetGameTime() then
-				local x, y, visible = Renderer.WorldToScreen(pos)
+				local x, y = Renderer.WorldToScreen(pos)
+				local visible = false
 				local hoveringOver = Input.IsCursorInRect(x, y, 30, 30)
+				
+				if x > 0 and y > 0 then visible = true end
 				if visible then
 					if type == "sentry" then
 						Renderer.SetDrawColor(255, 255, 255, 255)
@@ -8553,13 +8556,14 @@ function FAIO.drawWard(myHero)
 						Renderer.DrawImage(obsImageHandle, x, y, 30, 30)
 						Renderer.DrawText(FAIO.font, x, y+30, math.floor(dieTime - GameRules.GetGameTime()), 0)
 					end
-					if Menu.IsEnabled(FAIO.optionWardAwarenessClickRemove) and (os.clock() - FAIO.wardDrawingRemove) >= 0.25 then
+					if Menu.IsEnabled(FAIO.optionWardAwarenessClickRemove) and (os.clock() - FAIO.wardDrawingRemove) >= 0.5 then
 						if hoveringOver and Input.IsKeyDownOnce(Enum.ButtonCode.MOUSE_LEFT) then
 							FAIO.wardDrawingRemove = os.clock()
 						end
 					else
 						if hoveringOver and Input.IsKeyDownOnce(Enum.ButtonCode.MOUSE_LEFT) then
 							FAIO.wardProcessingTable[i] = nil
+							FAIO.wardDrawingRemove = 0
 						end
 					end
 				end
