@@ -15,30 +15,6 @@ function GetIconPath( name, ... )
 	return 'panorama/images/heroes/icons/npc_dota_hero_' .. name .. '_png.vtex_c'
 end
 
-local JSON = require "scripts.AIO.System.JSON"
-
-local Vars = nil
-
-function ResetVars( ... )
-	Vars = nil
-	Vars = require "scripts.AIO.System.Variables"
-end
-ResetVars()
-
-function LoadJSONConfigs( ... )
-	log('Loading configs...')
-	for k,v in pairs(Vars.JSONName) do
-		local FList = io.open ('scripts/AIO/Configs/' .. v[2] , 'r+')
-		local FItems = FList:read('*a')
-		log(' -Config ' .. v[1] .. ' loaded')
-		FList:close()
-		Vars.JSONList[v[1]] = JSON:decode(FItems)
-	end
-	log('Configs loaded.')
-	log('')
-end
-
-LoadJSONConfigs()
 
 local OverallPath = {}
 OverallPath[1] = { ".FAIO" }
@@ -4916,10 +4892,9 @@ function FAIO.isEnemyTurning(enemy)
 
 	if enemy == nil then return true end
 	if not NPC.IsRunning(enemy) then return true end
+	if NPC.IsTurning(enemy) then return true else return false end
 	--local rotationSpeed = Entity.GetAngVelocity(enemy):Length2D()
 	
-	local rotationSpeed = Vars.JSONList.heroes.DOTAHeroes[NPC.GetUnitName(enemy)].MovementTurnRate * ( 1 / (NPC.GetBaseSpeed(enemy) - FAIO.GetMoveSpeed(enemy)) )
-
 	if NPC.IsRunning(enemy) then
 		table.insert(FAIO.rotationTable, rotationSpeed)
 			if #FAIO.rotationTable > (Menu.GetValue(FAIO.optionKillStealInvokerTurn) + 1) then
@@ -6476,8 +6451,7 @@ function FAIO.TimberIsTreeInRangeForChain(myHero, enemy)
 			end
 		end
 
-
-		if chainTree then
+		if chainTree ~= nil then
 			return chainTree
 		end
 	
@@ -6595,25 +6569,32 @@ function FAIO.TimberGetBestChainPos(myHero, enemy, dist)
 
 	if not myHero then return Vector() end
 	if not enemy then return Vector() end
-
+	
 	local myMana = NPC.GetMana(myHero)
-
+	
 	local timberChain = NPC.GetAbilityByIndex(myHero, 1)
+
 		if not timberChain then return Vector() end
+		
 		if not Ability.IsCastable(timberChain, myMana) then return Vector() end
+		--if (Ability.IsReady(timberChain) == false or  Ability.GetManaCost(timberChain) < myMana) then return Vector() end
 
 	local chainCastRange = Ability.GetCastRange(timberChain) + 45
-	
+
 	local enemyPos = Entity.GetAbsOrigin(enemy)
+
 	if Menu.IsEnabled(FAIO.optionHeroTimberPredict) then
 		enemyPos = FAIO.castPrediction(myHero, enemy, 0.7 + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2))
 	end
 
 	local remainingDis = chainCastRange - (enemyPos - Entity.GetAbsOrigin(myHero)):Length2D()
 
+	
 	local chainPos = Vector()
 	local minDis = 99999
-
+	
+	
+		
 	if FAIO.TimberIsTreeInRangeForChain(myHero, enemy) == nil then
 		if next(FAIO.TimberGetEnemyChainTrees(myHero, enemy)) ~= nil then
 			for _, targetTree in ipairs(FAIO.TimberGetEnemyChainTrees(myHero, enemy)) do
@@ -16056,6 +16037,7 @@ function FAIO.TimberCombo(myHero, enemy)
 	
 	if enemy and Menu.IsKeyDown(FAIO.optionComboKey) and Entity.GetHealth(enemy) > 0 and FAIO.heroCanCastSpells(myHero, enemy) == true then
 		if FAIO.TimberIsTreeInRangeForChain(myHero, enemy) ~= nil or FAIO.TimberGetBestChainPos(myHero, enemy, rangeChecker):__tostring() ~= Vector():__tostring() then
+
 			if FAIO.TimberIsTreeInRangeForChain(myHero, enemy) ~= nil then
 				if timberChain and Ability.IsCastable(timberChain, myMana) then
 					Ability.CastPosition(timberChain, Entity.GetAbsOrigin(FAIO.TimberIsTreeInRangeForChain(myHero, enemy)))
@@ -19961,7 +19943,7 @@ function FAIO.InvokerCombo(myHero, enemy)
 end
 
 function FAIO.InvokerIceWallHelper(myHero, enemy, iceWall, myMana)
-	
+
 	if not myHero then return end
 	if not enemy then return end
 	if FAIO.heroCanCastSpells(myHero, enemy) == false then return end
@@ -19969,17 +19951,27 @@ function FAIO.InvokerIceWallHelper(myHero, enemy, iceWall, myMana)
 	if not iceWall then return end
 	if not Ability.IsReady(iceWall) or not Ability.IsCastable(iceWall, myMana) or not FAIO.InvokerIsAbilityInvoked(myHero, iceWall) then return end
 	if not NPC.IsEntityInRange(myHero, enemy, 600) then return end
-
+	
 	local betaRad = math.acos(200 / (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D())
 	local beta = betaRad * 180 / math.pi
 	local delta = math.acos((Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Dot(Entity.GetRotation(myHero):GetForward()) / (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D() * (Entity.GetRotation(myHero):GetForward()):Length2D()) * 180 / math.pi
-
+	
+	local HeroAbsOrigin = Entity.GetAbsOrigin(myHero)
+	local UnitAbsOrigin = Entity.GetAbsOrigin(enemy)
+	local Distance = (HeroAbsOrigin - UnitAbsOrigin):Length2D()
+	local katet2 = math.sqrt((Distance*Distance)-(200*200))
+	local tan_angle = katet2 / 200
+	local angle = math.atan2(tan_angle)
+	local VecRotate = (HeroAbsOrigin - UnitAbsOrigin):Normalized()
+	local Point3 = HeroAbsOrigin - VecRotate:Rotated(angle):Scaled(1)
+					
 	if NPC.IsEntityInRange(myHero, enemy, 275) then
 		Ability.CastNoTarget(iceWall)
 		return
 	else
 		if math.abs(delta - beta) > 7.5 then
-			FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(myHero) + (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Normalized():Scaled(5):Rotated(beta))		
+		
+			FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Point3)		
 			return
 		else
 			Ability.CastNoTarget(iceWall)
@@ -20287,8 +20279,18 @@ function FAIO.InvokerComboTornadoEmpIcewall(myHero, myMana, enemy, tornado, emp,
 		if FAIO.InvokerIsAbilityInvoked(myHero, iceWall) then
 			if FAIO.SleepReady(0.05) and iceWall and Ability.IsCastable(iceWall, myMana) then
 				if not NPC.IsEntityInRange(myHero, enemy, 550) then
-					FAIO.GenericAttackIssuer("Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy) + (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Normalized():Scaled(500), myHero)
+					local HeroAbsOrigin = Entity.GetAbsOrigin(myHero)
+					local UnitAbsOrigin = Entity.GetAbsOrigin(enemy)
+					local Distance = (HeroAbsOrigin - UnitAbsOrigin):Length2D()
+					local katet2 = math.sqrt((Distance*Distance)-(200*200))
+					local tan_angle = katet2 / 200
+					local angle = math.atan2(tan_angle)
+					local VecRotate = (HeroAbsOrigin - UnitAbsOrigin):Normalized()
+				    local Point3 = HeroAbsOrigin - VecRotate:Rotated(angle):Scaled(1)
+				
+					FAIO.GenericAttackIssuer("Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Point3)
 				else
+				
 					FAIO.InvokerIceWallHelper(myHero, enemy, iceWall, myMana)
 					FAIO.lastTick = os.clock()
 					return
